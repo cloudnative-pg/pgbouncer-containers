@@ -1,0 +1,141 @@
+name: Automatic Updates
+
+on:
+  schedule:
+    - cron: 0 0 * * *
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: 'bash -Eeuo pipefail -x {0}'
+
+jobs:
+  update:
+    runs-on: ubuntu-20.04
+    steps:
+      -
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.REPO_GHA_PAT }}
+          fetch-depth: 0
+      -
+        name: Get latest PgBouncer
+        run: |
+          echo PGBOUNCER_VERSION=$(curl -s https://api.github.com/repos/pgbouncer/pgbouncer/releases/latest | jq -r '.assets[].name' | grep -oP "pgbouncer-\K([[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+)(?=\.tar\.gz)") >> $GITHUB_ENV
+      -
+        name: Get latest Debian base image
+        run: |
+           echo DEBIAN_VERSION=$(curl -SsL "https://registry.hub.docker.com/v2/repositories/library/debian/tags/?name=buster-20&ordering=last_updated&" | jq -r ".results[].name | match(\"buster.*-slim\") | .string" | head -n1) >> $GITHUB_ENV
+      -
+        name: Update Dockerfile
+        run: |
+          INITIAL_RELEASE_VERSION=$(jq -r '.IMAGE_RELEASE_VERSION' .versions.json)
+          sed \
+            -e 's/%%PGBOUNCER_VERSION%%/${{ env.PGBOUNCER_VERSION }}/' \
+            -e 's/%%DEBIAN_VERSION%%/${{ env.DEBIAN_VERSION }}/' \
+            -e "s/%%IMAGE_RELEASE_VERSION%%/${INITIAL_RELEASE_VERSION}/" \
+            Dockerfile.template > Dockerfile
+      -
+        name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Build and export to Docker
+        uses: docker/build-push-action@v2.7.0
+        with:
+          context: .
+          load: true
+          push: false
+          tags: newimage
+      -
+        name: Dockle scan
+        uses: erzz/dockle-action@v1.2.0
+        with:
+          image: newimage
+          exit-code: '1'
+          failure-threshold: WARN
+        env:
+          DOCKLE_IGNORES: DKL-DI-0006
+      -
+        name: Extract package list from container
+        run: |
+          docker run -t --entrypoint bash newimage -c 'apt list --installed | sort' > packages.txt
+      -
+        # We verify if there has been any change in the image. It could be:
+        # * a pgbouncer update
+        # * a new Debian base image
+        # * any change in the installed packages
+        # * any change in the git repository except the pipeline
+        name: Check if the image has been updated since the latest tag
+        run: |
+          echo UPDATED=false >> $GITHUB_ENV
+          if git describe --tags; then
+            current_tag=$(git describe --tags --abbrev=0)
+            if [[ -n $(git diff --name-status  ${current_tag} -- . ':(exclude)README.md' ':(exclude).github' ':(exclude).gitignore') ]]; then
+              echo UPDATED=true >> $GITHUB_ENV
+            fi
+          fi
+      -
+        name: Define tag
+        if: ${{ github.ref == 'refs/heads/main' && env.UPDATED == 'true' }}
+        run: |
+          release_number=1
+          if git describe --tags; then
+            current_tag=$(git describe --tags --abbrev=0)
+            current_pgbouncer_version=$(echo $current_tag | cut -d'-' -f 1)
+            current_pgbouncer_version=${current_pgbouncer_version##v}
+            current_release=$(echo $current_tag | cut -d'-' -f 2)
+            if [ $current_pgbouncer_version = ${{ env.PGBOUNCER_VERSION }} ]; then
+              release_number=$((current_release+1))
+            fi
+          fi
+          echo IMAGE_RELEASE_VERSION=${release_number} >> $GITHUB_ENV
+          echo TAG=${{ env.PGBOUNCER_VERSION }}-${release_number} >> $GITHUB_ENV
+      -
+        # In case we are releasing, we need to re-generate the Dockerfile from
+        # the template again since now we also know the proper release version.
+        name: Update Dockerfile and the JSON version file
+        if: ${{ github.ref == 'refs/heads/main' && env.UPDATED == 'true' }}
+        run: |
+          sed \
+            -e 's/%%PGBOUNCER_VERSION%%/${{ env.PGBOUNCER_VERSION }}/' \
+            -e 's/%%DEBIAN_VERSION%%/${{ env.DEBIAN_VERSION }}/' \
+            -e 's/%%IMAGE_RELEASE_VERSION%%/${{ env.IMAGE_RELEASE_VERSION }}/' \
+            Dockerfile.template > Dockerfile
+          jq -S '.PGBOUNCER_VERSION = "${{ env.PGBOUNCER_VERSION }}" | .IMAGE_RELEASE_VERSION = "${{ env.IMAGE_RELEASE_VERSION }}" | .DEBIAN_VERSION = "${{ env.DEBIAN_VERSION }}"' < .versions.json >> .versions.json.new
+          mv .versions.json.new .versions.json
+      -
+        name: Temporarily disable "include administrators" branch protection
+        if: ${{ always() && github.ref == 'refs/heads/main' && env.UPDATED == 'true' }}
+        id: disable_include_admins
+        uses: benjefferies/branch-protection-bot@1.0.7
+        with:
+          access_token: ${{ secrets.REPO_GHA_PAT }}
+          branch: main
+          enforce_admins: false
+      -
+        name: Commit changes
+        if: ${{ github.ref == 'refs/heads/main' && env.UPDATED == 'true' }}
+        uses: EndBug/add-and-commit@v7
+        id: commit
+        with:
+          author_name: EnterpriseDB Automated Updates
+          author_email: noreply@enterprisedb.com
+          message: 'Automatic update'
+          tag: v${{ env.TAG }}
+      -
+        name: Make sure a tag is created in case of update
+        if: ${{ github.ref == 'refs/heads/main' && env.UPDATED == 'true' }}
+        uses: mathieudutour/github-tag-action@v5.6
+        with:
+          github_token: ${{ secrets.REPO_GHA_PAT }}
+          custom_tag: ${{ env.TAG }}
+          tag_prefix: 'v'
+      -
+        name: Enable "include administrators" branch protection
+        uses: benjefferies/branch-protection-bot@1.0.7
+        if: ${{ always() && github.ref == 'refs/heads/main' && env.UPDATED == 'true' }}
+        with:
+          access_token: ${{ secrets.REPO_GHA_PAT }}
+          branch: main
+          enforce_admins: ${{ steps.disable_include_admins.outputs.initial_status }}

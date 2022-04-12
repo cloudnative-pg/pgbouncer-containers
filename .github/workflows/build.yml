@@ -1,0 +1,91 @@
+name: Continuous Delivery
+
+on:
+  push:
+    tags:
+      - v*
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: 'bash -Eeuo pipefail -x {0}'
+
+env:
+  IMAGE_STAGING: ghcr.io/cloudnative-pg/pgbouncer-testing
+  IMAGE_RELEASE: ghcr.io/cloudnative-pg/pgbouncer
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-20.04
+    steps:
+      -
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      -
+        name: Detect platforms
+        id: docker-platforms
+        run: |
+          # Now we only support linux/amd64
+          platforms="linux/amd64"
+          echo "::set-output name=platforms::${platforms}"
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: ${{ steps.docker-platforms.outputs.platforms }}
+      -
+        name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Log in to the GitHub Container registry
+        uses: docker/login-action@v1.14.1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      -
+        name: Set image repository
+        id: image-repo
+        run: |
+          if [[ "${GITHUB_REF}" =~ refs/tags/v(.*) ]]; then
+            echo "::set-output name=images::${{ env.IMAGE_RELEASE }},${{ env.IMAGE_STAGING }}"
+          else
+            echo "::set-output name=images::${{ env.IMAGE_STAGING }}"
+          fi
+      -
+        name: Gather image info
+        id: gather-versions
+        run: |
+          pgbouncer_version=$(jq -r '.PGBOUNCER_VERSION' .versions.json)
+          release_version=$(jq -r '.IMAGE_RELEASE_VERSION' .versions.json)
+          debian_version=$(jq -r '.DEBIAN_VERSION' .versions.json)
+          echo "::set-output name=pgbouncer_version::${pgbouncer_version}"
+          echo "::set-output name=release_version::${release_version}"
+          echo "::set-output name=debian_version::${debian_version}"
+      -
+        name: Docker meta
+        id: docker-meta
+        uses: docker/metadata-action@v3.5.0
+        with:
+          # list of Docker images to use as base name for tags
+          images: "${{ steps.image-repo.outputs.images }}"
+          # generate Docker tags based on the following events/attributes
+          tags: |
+            type=match,pattern=v(.*),group=1
+            type=match,pattern=v(.*)-\d+,group=1
+            type=ref,event=branch
+          labels: |
+            org.opencontainers.image.version=${{ steps.gather-versions.outputs.pgbouncer_version }}
+            org.opencontainers.image.revision=${{ steps.gather-versions.outputs.release_version }}
+            org.opencontainers.image.licenses=PostgreSQL
+      -
+        name: Build and push
+        uses: docker/build-push-action@v2.10.0
+        with:
+          platforms: ${{ steps.docker-platforms.outputs.platforms }}
+          context: .
+          push: true
+          tags: ${{ steps.docker-meta.outputs.tags }}
+          labels: ${{ steps.docker-meta.outputs.labels }}
