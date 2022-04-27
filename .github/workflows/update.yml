@@ -126,7 +126,7 @@ jobs:
       -
         name: Make sure a tag is created in case of update
         if: ${{ github.ref == 'refs/heads/main' && env.UPDATED == 'true' }}
-        uses: mathieudutour/github-tag-action@v5.6
+        uses: mathieudutour/github-tag-action@v6.0
         with:
           github_token: ${{ secrets.REPO_GHA_PAT }}
           custom_tag: ${{ env.TAG }}
