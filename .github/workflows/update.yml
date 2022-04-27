@@ -116,7 +116,7 @@ jobs:
       -
         name: Commit changes
         if: ${{ github.ref == 'refs/heads/main' && env.UPDATED == 'true' }}
-        uses: EndBug/add-and-commit@v7
+        uses: EndBug/add-and-commit@v9
         id: commit
         with:
           author_name: EnterpriseDB Automated Updates
