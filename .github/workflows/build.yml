@@ -31,7 +31,7 @@ jobs:
           echo "::set-output name=platforms::${platforms}"
       -
         name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v2
         with:
           platforms: ${{ steps.docker-platforms.outputs.platforms }}
       -
