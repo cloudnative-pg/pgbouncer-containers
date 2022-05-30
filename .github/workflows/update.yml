@@ -49,7 +49,7 @@ jobs:
           tags: newimage
       -
         name: Dockle scan
-        uses: erzz/dockle-action@v1.2.0
+        uses: erzz/dockle-action@v1.3.0
         with:
           image: newimage
           exit-code: '1'
