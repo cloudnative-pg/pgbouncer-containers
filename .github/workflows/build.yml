@@ -26,8 +26,7 @@ jobs:
         name: Detect platforms
         id: docker-platforms
         run: |
-          # Now we only support linux/amd64
-          platforms="linux/amd64"
+          platforms="linux/amd64,linux/arm64,linux/arm/v7"
           echo "::set-output name=platforms::${platforms}"
       -
         name: Set up QEMU
