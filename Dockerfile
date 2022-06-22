@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # 
-ARG DEBIAN_VERSION=buster-20220328-slim
+ARG DEBIAN_VERSION=buster-20220527-slim
 ARG PGBOUNCER_VERSION=1.17.0
 
 FROM debian:${DEBIAN_VERSION} AS build
@@ -42,8 +42,8 @@ ARG TARGETARCH
 
 LABEL name="PgBouncer Container Images" \
       vendor="The CloudNativePG Contributors" \
-      version="%%PGBOUNCER_VERSION%%" \
-      release="%%IMAGE_RELEASE_VERSION%%" \
+      version="1.17.0" \
+      release="5" \
       summary="Container images for PgBouncer (connection pooler for PostgreSQL)." \
       description="This Docker image contains PgBouncer based on Debian ${DEBIAN_VERSION}."
 
@@ -68,10 +68,8 @@ RUN touch /etc/pgbouncer/pgbouncer.ini /etc/pgbouncer/userlist.txt
 
 # DoD 2.3 - remove setuid/setgid from any binary that not strictly requires it, and before doing that list them on the stdout
 RUN find / -not -path "/proc/*" -perm /6000 -type f -exec ls -ld {} \; -exec chmod a-s {} \; || true
-HEALTHCHECK --interval=5m --timeout=3s \
-  CMD curl -f http://localhost/ || exit 1
-EXPOSE 6432
 
+EXPOSE 6432
 USER pgbouncer
 
 COPY entrypoint.sh .

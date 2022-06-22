@@ -1,140 +1,188 @@
-acl-2.2.53-1.el8.x86_64
-audit-libs-3.0-0.17.20191104git1c2f876.el8.x86_64
-basesystem-11-5.el8.noarch
-bash-4.4.20-2.el8.x86_64
-brotli-1.0.6-3.el8.x86_64
-bzip2-libs-1.0.6-26.el8.x86_64
-ca-certificates-2021.2.50-80.0.el8_4.noarch
-chkconfig-1.19.1-1.el8.x86_64
-coreutils-single-8.30-12.el8.x86_64
-cracklib-2.9.6-15.el8.x86_64
-cracklib-dicts-2.9.6-15.el8.x86_64
-crypto-policies-20210617-1.gitc776d3e.el8.noarch
-cryptsetup-libs-2.3.3-4.el8_5.1.x86_64
-curl-7.61.1-22.el8.x86_64
-cyrus-sasl-lib-2.1.27-6.el8_5.x86_64
-dbus-1.12.8-14.el8.x86_64
-dbus-common-1.12.8-14.el8.noarch
-dbus-daemon-1.12.8-14.el8.x86_64
-dbus-libs-1.12.8-14.el8.x86_64
-dbus-tools-1.12.8-14.el8.x86_64
-device-mapper-1.02.177-11.el8_5.x86_64
-device-mapper-libs-1.02.177-11.el8_5.x86_64
-elfutils-default-yama-scope-0.185-1.el8.noarch
-elfutils-libelf-0.185-1.el8.x86_64
-elfutils-libs-0.185-1.el8.x86_64
-epel-release-8-15.el8.noarch
-expat-2.2.5-4.el8_5.3.x86_64
-file-libs-5.33-20.el8.x86_64
-filesystem-3.8-6.el8.x86_64
-findutils-4.6.0-20.el8.x86_64
-gawk-4.2.1-2.el8.x86_64
-glib2-2.56.4-156.el8.x86_64
-glibc-2.28-164.el8_5.3.x86_64
-glibc-common-2.28-164.el8_5.3.x86_64
-glibc-minimal-langpack-2.28-164.el8_5.3.x86_64
-gmp-6.1.2-10.el8.x86_64
-gnupg2-2.2.20-2.el8.x86_64
-gnutls-3.6.16-4.el8.x86_64
-gobject-introspection-1.56.1-1.el8.x86_64
-gpg-pubkey-d4082792-5b32db75
-gpg-pubkey-fd431d51-4ae0493b
-gpgme-1.13.1-9.el8.x86_64
-grep-3.1-6.el8.x86_64
-gzip-1.9-12.el8.x86_64
-info-6.5-6.el8.x86_64
-json-c-0.13.1-2.el8.x86_64
-json-glib-1.4.4-1.el8.x86_64
-keyutils-libs-1.5.10-9.el8.x86_64
-kmod-libs-25-18.el8.x86_64
-krb5-libs-1.18.2-14.el8.x86_64
-langpacks-en-1.0-12.el8.noarch
-libacl-2.2.53-1.el8.x86_64
-libarchive-3.3.3-3.el8_5.x86_64
-libassuan-2.5.1-3.el8.x86_64
-libattr-2.4.48-3.el8.x86_64
-libblkid-2.32.1-28.el8.x86_64
-libcap-2.26-5.el8.x86_64
-libcap-ng-0.7.11-1.el8.x86_64
-libcom_err-1.45.6-2.el8.x86_64
-libcurl-7.61.1-22.el8.x86_64
-libdb-5.3.28-42.el8_4.x86_64
-libdb-utils-5.3.28-42.el8_4.x86_64
-libdnf-0.63.0-3.el8.x86_64
-libevent-2.1.8-5.el8.x86_64
-libfdisk-2.32.1-28.el8.x86_64
-libffi-3.1-22.el8.x86_64
-libgcc-8.5.0-4.el8_5.x86_64
-libgcrypt-1.8.5-6.el8.x86_64
-libgpg-error-1.31-1.el8.x86_64
-libicu-60.3-2.el8_1.x86_64
-libidn2-2.2.0-1.el8.x86_64
-libksba-1.3.5-7.el8.x86_64
-libmodulemd-2.13.0-1.el8.x86_64
-libmount-2.32.1-28.el8.x86_64
-libnghttp2-1.33.0-3.el8_2.1.x86_64
-libnsl2-1.2.0-2.20180605git4a062cf.el8.x86_64
-libpeas-1.22.0-6.el8.x86_64
-libpsl-0.20.2-6.el8.x86_64
-libpwquality-1.4.4-3.el8.x86_64
-librepo-1.14.0-2.el8.x86_64
-librhsm-0.0.3-4.el8.x86_64
-libseccomp-2.5.1-1.el8.x86_64
-libselinux-2.9-5.el8.x86_64
-libsemanage-2.9-6.el8.x86_64
-libsepol-2.9-3.el8.x86_64
-libsigsegv-2.11-5.el8.x86_64
-libsmartcols-2.32.1-28.el8.x86_64
-libsolv-0.7.19-1.el8.x86_64
-libssh-0.9.4-3.el8.x86_64
-libssh-config-0.9.4-3.el8.noarch
-libstdc++-8.5.0-4.el8_5.x86_64
-libtasn1-4.13-3.el8.x86_64
-libtirpc-1.1.4-5.el8.x86_64
-libunistring-0.9.9-3.el8.x86_64
-libusbx-1.0.23-4.el8.x86_64
-libutempter-1.1.6-14.el8.x86_64
-libuuid-2.32.1-28.el8.x86_64
-libverto-0.3.0-5.el8.x86_64
-libxcrypt-4.1.1-6.el8.x86_64
-libxml2-2.9.7-12.el8_5.x86_64
-libyaml-0.1.7-5.el8.x86_64
-libzstd-1.4.4-1.el8.x86_64
-lua-libs-5.3.4-12.el8.x86_64
-lz4-libs-1.8.3-3.el8_4.x86_64
-microdnf-3.8.0-2.el8.x86_64
-mpfr-3.1.6-1.el8.x86_64
-ncurses-base-6.1-9.20180224.el8.noarch
-ncurses-libs-6.1-9.20180224.el8.x86_64
-nettle-3.4.1-7.el8.x86_64
-npth-1.5-4.el8.x86_64
-openldap-2.4.46-18.el8.x86_64
-openssl-1.1.1k-6.el8_5.x86_64
-openssl-libs-1.1.1k-6.el8_5.x86_64
-p11-kit-0.23.22-1.el8.x86_64
-p11-kit-trust-0.23.22-1.el8.x86_64
-pam-1.3.1-15.el8.x86_64
-pcre-8.42-6.el8.x86_64
-pcre2-10.32-2.el8.x86_64
-pgdg-redhat-repo-42.0-24.noarch
-popt-1.18-1.el8.x86_64
-postgresql13-13.6-1PGDG.rhel8.x86_64
-postgresql13-libs-13.6-1PGDG.rhel8.x86_64
-publicsuffix-list-dafsa-20180723-1.el8.noarch
-readline-7.0-10.el8.x86_64
-redhat-release-8.5-0.8.el8.x86_64
-rootfiles-8.1-22.el8.noarch
-rpm-4.14.3-19.el8_5.2.x86_64
-rpm-libs-4.14.3-19.el8_5.2.x86_64
-sed-4.5-2.el8.x86_64
-setup-2.12.2-6.el8.noarch
-shadow-utils-4.6-14.el8.x86_64
-sqlite-libs-3.26.0-15.el8.x86_64
-systemd-239-51.el8_5.5.x86_64
-systemd-libs-239-51.el8_5.5.x86_64
-systemd-pam-239-51.el8_5.5.x86_64
-tzdata-2022a-1.el8.noarch
-udns-0.4-13.el8.x86_64
-util-linux-2.32.1-28.el8.x86_64
-xz-libs-5.2.4-3.el8.x86_64
-zlib-1.2.11-17.el8.x86_64
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Listing...
+adduser/now 3.118 all [installed,local]
+apt/now 1.8.2.3 amd64 [installed,local]
+base-files/now 10.3+deb10u12 amd64 [installed,local]
+base-passwd/now 3.5.46 amd64 [installed,local]
+bash/now 5.0-4 amd64 [installed,local]
+bsdutils/now 1:2.33.1-0.1 amd64 [installed,local]
+bzip2/now 1.0.6-9.2~deb10u1 amd64 [installed,local]
+coreutils/now 8.30-3 amd64 [installed,local]
+cron/now 3.0pl1-134+deb10u1 amd64 [installed,local]
+dash/now 0.5.10.2-5 amd64 [installed,local]
+debconf/now 1.5.71+deb10u1 all [installed,local]
+debian-archive-keyring/now 2019.1+deb10u1 all [installed,local]
+debianutils/now 4.8.6.1 amd64 [installed,local]
+diffutils/now 1:3.7-3 amd64 [installed,local]
+distro-info-data/now 0.41+deb10u4 all [installed,local]
+dpkg/now 1.19.8 amd64 [installed,local]
+e2fsprogs/now 1.44.5-1+deb10u3 amd64 [installed,local]
+exim4-base/now 4.92-8+deb10u6 amd64 [installed,local]
+exim4-config/now 4.92-8+deb10u6 all [installed,local]
+exim4-daemon-light/now 4.92-8+deb10u6 amd64 [installed,local]
+fdisk/now 2.33.1-0.1 amd64 [installed,local]
+file/now 1:5.35-4+deb10u2 amd64 [installed,local]
+findutils/now 4.6.0+git+20190209-2 amd64 [installed,local]
+gcc-8-base/now 8.3.0-6 amd64 [installed,local]
+gpgv/now 2.2.12-1+deb10u1 amd64 [installed,local]
+grep/now 3.3-1 amd64 [installed,local]
+guile-2.2-libs/now 2.2.4+1-2+deb10u1 amd64 [installed,local]
+gzip/now 1.9-3+deb10u1 amd64 [installed,local]
+hostname/now 3.21 amd64 [installed,local]
+init-system-helpers/now 1.56+nmu1 all [installed,local]
+krb5-locales/now 1.17-3+deb10u3 all [installed,local]
+libacl1/now 2.2.53-4 amd64 [installed,local]
+libapt-pkg5.0/now 1.8.2.3 amd64 [installed,local]
+libattr1/now 1:2.4.48-4 amd64 [installed,local]
+libaudit-common/now 1:2.8.4-3 all [installed,local]
+libaudit1/now 1:2.8.4-3 amd64 [installed,local]
+libbfio1/now 20170123-4 amd64 [installed,local]
+libblkid1/now 2.33.1-0.1 amd64 [installed,local]
+libbsd0/now 0.9.1-2+deb10u1 amd64 [installed,local]
+libbz2-1.0/now 1.0.6-9.2~deb10u1 amd64 [installed,local]
+libc-bin/now 2.28-10+deb10u1 amd64 [installed,local]
+libc-l10n/now 2.28-10+deb10u1 all [installed,local]
+libc6/now 2.28-10+deb10u1 amd64 [installed,local]
+libcap-ng0/now 0.7.9-2 amd64 [installed,local]
+libcom-err2/now 1.44.5-1+deb10u3 amd64 [installed,local]
+libdb5.3/now 5.3.28+dfsg1-0.5 amd64 [installed,local]
+libdebconfclient0/now 0.249 amd64 [installed,local]
+libedit2/now 3.1-20181209-1 amd64 [installed,local]
+libevent-2.1-6/now 2.1.8-stable-4 amd64 [installed,local]
+libevent-core-2.1-6/now 2.1.8-stable-4 amd64 [installed,local]
+libevent-dev/now 2.1.8-stable-4 amd64 [installed,local]
+libevent-extra-2.1-6/now 2.1.8-stable-4 amd64 [installed,local]
+libevent-openssl-2.1-6/now 2.1.8-stable-4 amd64 [installed,local]
+libevent-pthreads-2.1-6/now 2.1.8-stable-4 amd64 [installed,local]
+libexpat1/now 2.2.6-2+deb10u4 amd64 [installed,local]
+libext2fs2/now 1.44.5-1+deb10u3 amd64 [installed,local]
+libfdisk1/now 2.33.1-0.1 amd64 [installed,local]
+libffi6/now 3.2.1-9 amd64 [installed,local]
+libfribidi0/now 1.0.5-3.1+deb10u1 amd64 [installed,local]
+libfuse2/now 2.9.9-1+deb10u1 amd64 [installed,local]
+libgc1c2/now 1:7.6.4-0.4 amd64 [installed,local]
+libgcc1/now 1:8.3.0-6 amd64 [installed,local]
+libgcrypt20/now 1.8.4-5+deb10u1 amd64 [installed,local]
+libgmp10/now 2:6.1.2+dfsg-4+deb10u1 amd64 [installed,local]
+libgnutls-dane0/now 3.6.7-4+deb10u7 amd64 [installed,local]
+libgnutls30/now 3.6.7-4+deb10u7 amd64 [installed,local]
+libgpg-error0/now 1.35-1 amd64 [installed,local]
+libgpm2/now 1.20.7-5 amd64 [installed,local]
+libgsasl7/now 1.8.0-8+b2 amd64 [installed,local]
+libgssapi-krb5-2/now 1.17-3+deb10u3 amd64 [installed,local]
+libhogweed4/now 3.4.1-1+deb10u1 amd64 [installed,local]
+libicu63/now 63.1-6+deb10u3 amd64 [installed,local]
+libidn11/now 1.33-2.2 amd64 [installed,local]
+libidn2-0/now 2.0.5-1+deb10u1 amd64 [installed,local]
+libk5crypto3/now 1.17-3+deb10u3 amd64 [installed,local]
+libkeyutils1/now 1.6-6 amd64 [installed,local]
+libkrb5-3/now 1.17-3+deb10u3 amd64 [installed,local]
+libkrb5support0/now 1.17-3+deb10u3 amd64 [installed,local]
+libkyotocabinet16v5/now 1.2.76-4.2+b1 amd64 [installed,local]
+libldap-2.4-2/now 2.4.47+dfsg-3+deb10u7 amd64 [installed,local]
+libldap-common/now 2.4.47+dfsg-3+deb10u7 all [installed,local]
+libllvm7/now 1:7.0.1-8+deb10u2 amd64 [installed,local]
+libltdl7/now 2.4.6-9 amd64 [installed,local]
+liblz4-1/now 1.8.3-1+deb10u1 amd64 [installed,local]
+liblzma5/now 5.2.4-1+deb10u1 amd64 [installed,local]
+liblzo2-2/now 2.10-0.1 amd64 [installed,local]
+libmagic-mgc/now 1:5.35-4+deb10u2 amd64 [installed,local]
+libmagic1/now 1:5.35-4+deb10u2 amd64 [installed,local]
+libmailutils5/now 1:3.5-4 amd64 [installed,local]
+libmariadb3/now 1:10.3.34-0+deb10u1 amd64 [installed,local]
+libmount1/now 2.33.1-0.1 amd64 [installed,local]
+libmpdec2/now 2.4.2-2 amd64 [installed,local]
+libncurses6/now 6.1+20181013-2+deb10u2 amd64 [installed,local]
+libncursesw6/now 6.1+20181013-2+deb10u2 amd64 [installed,local]
+libnettle6/now 3.4.1-1+deb10u1 amd64 [installed,local]
+libntlm0/now 1.5-1+deb10u1 amd64 [installed,local]
+libp11-kit0/now 0.23.15-2+deb10u1 amd64 [installed,local]
+libpam-modules-bin/now 1.3.1-5 amd64 [installed,local]
+libpam-modules/now 1.3.1-5 amd64 [installed,local]
+libpam-runtime/now 1.3.1-5 all [installed,local]
+libpam0g/now 1.3.1-5 amd64 [installed,local]
+libpcre3/now 2:8.39-12 amd64 [installed,local]
+libpopt0/now 1.16-12 amd64 [installed,local]
+libpq5/now 11.16-0+deb10u1 amd64 [installed,local]
+libprocps7/now 2:3.3.15-2 amd64 [installed,local]
+libpython2.7-minimal/now 2.7.16-2+deb10u1 amd64 [installed,local]
+libpython2.7-stdlib/now 2.7.16-2+deb10u1 amd64 [installed,local]
+libpython2.7/now 2.7.16-2+deb10u1 amd64 [installed,local]
+libpython3-stdlib/now 3.7.3-1 amd64 [installed,local]
+libpython3.7-minimal/now 3.7.3-2+deb10u3 amd64 [installed,local]
+libpython3.7-stdlib/now 3.7.3-2+deb10u3 amd64 [installed,local]
+libreadline7/now 7.0-5 amd64 [installed,local]
+libsasl2-2/now 2.1.27+dfsg-1+deb10u2 amd64 [installed,local]
+libsasl2-modules-db/now 2.1.27+dfsg-1+deb10u2 amd64 [installed,local]
+libsasl2-modules/now 2.1.27+dfsg-1+deb10u2 amd64 [installed,local]
+libseccomp2/now 2.3.3-4 amd64 [installed,local]
+libselinux1/now 2.8-1+b1 amd64 [installed,local]
+libsemanage-common/now 2.8-2 all [installed,local]
+libsemanage1/now 2.8-2 amd64 [installed,local]
+libsensors-config/now 1:3.5.0-3 all [installed,local]
+libsensors5/now 1:3.5.0-3 amd64 [installed,local]
+libsepol1/now 2.8-1 amd64 [installed,local]
+libsmartcols1/now 2.33.1-0.1 amd64 [installed,local]
+libsqlite3-0/now 3.27.2-3+deb10u1 amd64 [installed,local]
+libss2/now 1.44.5-1+deb10u3 amd64 [installed,local]
+libssl-dev/now 1.1.1n-0+deb10u2 amd64 [installed,local]
+libssl1.1/now 1.1.1n-0+deb10u2 amd64 [installed,local]
+libstdc++6/now 8.3.0-6 amd64 [installed,local]
+libsystemd0/now 241-7~deb10u8 amd64 [installed,local]
+libtasn1-6/now 4.13-3 amd64 [installed,local]
+libtinfo6/now 6.1+20181013-2+deb10u2 amd64 [installed,local]
+libudev1/now 241-7~deb10u8 amd64 [installed,local]
+libudns-dev/now 0.4-1+b1 amd64 [installed,local]
+libudns0/now 0.4-1+b1 amd64 [installed,local]
+libunbound8/now 1.9.0-2+deb10u2 amd64 [installed,local]
+libunistring2/now 0.9.10-1 amd64 [installed,local]
+libuuid1/now 2.33.1-0.1 amd64 [installed,local]
+libvshadow-utils/now 20190127-1 amd64 [installed,local]
+libvshadow1/now 20190127-1 amd64 [installed,local]
+libwrap0/now 7.6.q-28 amd64 [installed,local]
+libxml2/now 2.9.4+dfsg1-7+deb10u4 amd64 [installed,local]
+libxslt1.1/now 1.1.32-2.2~deb10u1 amd64 [installed,local]
+libzstd1/now 1.3.8+dfsg-3+deb10u2 amd64 [installed,local]
+locales/now 2.28-10+deb10u1 all [installed,local]
+login/now 1:4.5-1.1 amd64 [installed,local]
+logrotate/now 3.14.0-4 amd64 [installed,local]
+lsb-base/now 10.2019051400 all [installed,local]
+lsb-release/now 10.2019051400 all [installed,local]
+mailutils-common/now 1:3.5-4 all [installed,local]
+mailutils/now 1:3.5-4 amd64 [installed,local]
+mariadb-common/now 1:10.3.34-0+deb10u1 all [installed,local]
+mawk/now 1.3.3-17+b3 amd64 [installed,local]
+mime-support/now 3.62 all [installed,local]
+mount/now 2.33.1-0.1 amd64 [installed,local]
+mysql-common/now 5.8+1.0.5 all [installed,local]
+ncurses-base/now 6.1+20181013-2+deb10u2 all [installed,local]
+ncurses-bin/now 6.1+20181013-2+deb10u2 amd64 [installed,local]
+netbase/now 5.6 all [installed,local]
+openssl/now 1.1.1n-0+deb10u2 amd64 [installed,local]
+passwd/now 1:4.5-1.1 amd64 [installed,local]
+perl-base/now 5.28.1-6+deb10u1 amd64 [installed,local]
+postgresql-11/now 11.16-0+deb10u1 amd64 [installed,local]
+postgresql-client-11/now 11.16-0+deb10u1 amd64 [installed,local]
+postgresql-client-common/now 200+deb10u4 all [installed,local]
+postgresql-common/now 200+deb10u4 all [installed,local]
+postgresql/now 11+200+deb10u4 all [installed,local]
+procps/now 2:3.3.15-2 amd64 [installed,local]
+psmisc/now 23.2-1+deb10u1 amd64 [installed,local]
+python3-minimal/now 3.7.3-1 amd64 [installed,local]
+python3.7-minimal/now 3.7.3-2+deb10u3 amd64 [installed,local]
+python3.7/now 3.7.3-2+deb10u3 amd64 [installed,local]
+python3/now 3.7.3-1 amd64 [installed,local]
+readline-common/now 7.0-5 all [installed,local]
+sed/now 4.7-1 amd64 [installed,local]
+sensible-utils/now 0.0.12 all [installed,local]
+ssl-cert/now 1.0.39 all [installed,local]
+sysstat/now 12.0.3-2 amd64 [installed,local]
+sysvinit-utils/now 2.93-8 amd64 [installed,local]
+tar/now 1.30+dfsg-6 amd64 [installed,local]
+tzdata/now 2021a-0+deb10u5 all [installed,local]
+ucf/now 3.0038+nmu1 all [installed,local]
+util-linux/now 2.33.1-0.1 amd64 [installed,local]
+xz-utils/now 5.2.4-1+deb10u1 amd64 [installed,local]
+zlib1g/now 1:1.2.11.dfsg-1+deb10u1 amd64 [installed,local]
