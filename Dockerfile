@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # 
-ARG DEBIAN_VERSION=buster-20220527-slim
+ARG DEBIAN_VERSION=buster-20220622-slim
 ARG PGBOUNCER_VERSION=1.17.0
 
 FROM debian:${DEBIAN_VERSION} AS build
