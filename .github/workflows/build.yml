@@ -70,7 +70,7 @@ jobs:
       -
         name: Docker meta
         id: docker-meta
-        uses: docker/metadata-action@v4.1.0
+        uses: docker/metadata-action@v4.1.1
         with:
           # list of Docker images to use as base name for tags
           images: "${{ steps.image-repo.outputs.images }}"
