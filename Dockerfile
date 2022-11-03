@@ -54,8 +54,8 @@ RUN  set -ex; \
      apt-get -y clean ; \
      rm -rf /var/lib/apt/lists/*; \
      rm -fr /tmp/* ; \
-     addgroup --gid 996 pgbouncer ; \
-     adduser --uid 998 --gid 996 pgbouncer ; \
+     groupadd -r --gid 996 pgbouncer ; \
+     useradd -r --uid 998 --gid 996 pgbouncer ; \
      mkdir -p /var/log/pgbouncer ; \
      mkdir -p /var/run/pgbouncer ; \
      chown pgbouncer:pgbouncer /var/log/pgbouncer ; \
