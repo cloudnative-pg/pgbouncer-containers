@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# 
+#
 ARG DEBIAN_VERSION=buster-20221024-slim
 ARG PGBOUNCER_VERSION=1.17.0
 
@@ -23,7 +23,7 @@ ARG PGBOUNCER_VERSION
 # Install build dependencies.
 RUN set -ex; \
     apt-get update && apt-get upgrade -y; \
-	apt-get install -y --no-install-recommends curl make pkg-config libevent-dev build-essential libssl-dev libudns-dev openssl ; \
+    apt-get install -y --no-install-recommends curl make pkg-config libevent-dev build-essential libssl-dev libudns-dev openssl ; \
     apt-get purge -y --auto-remove ; \
     rm -fr /tmp/* ; \
     rm -rf /var/lib/apt/lists/*
