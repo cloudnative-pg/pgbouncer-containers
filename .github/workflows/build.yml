@@ -28,18 +28,16 @@ jobs:
           fetch-depth: 0
       -
         name: Detect platforms
-        id: docker-platforms
         run: |
           platforms="linux/amd64,linux/arm64,linux/arm/v7"
-          echo "::set-output name=platforms::${platforms}"
+          echo "PLATFORMS=${platforms}" >> $GITHUB_ENV
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
         with:
-          platforms: ${{ steps.docker-platforms.outputs.platforms }}
+          platforms: ${{ env.PLATFORMS }}
       -
         name: Set up Docker Buildx
-        id: buildx
         uses: docker/setup-buildx-action@v2
       -
         name: Log in to the GitHub Container registry
@@ -50,44 +48,42 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       -
         name: Set image repository
-        id: image-repo
         run: |
           if [[ "${GITHUB_REF}" =~ refs/tags/v(.*) ]]; then
-            echo "::set-output name=images::${{ env.IMAGE_RELEASE }},${{ env.IMAGE_STAGING }}"
+            echo "IMAGES=${{ env.IMAGE_RELEASE }},${{ env.IMAGE_STAGING }}" >> $GITHUB_ENV
           else
-            echo "::set-output name=images::${{ env.IMAGE_STAGING }}"
+            echo "IMAGES=${{ env.IMAGE_STAGING }}" >> $GITHUB_ENV
           fi
       -
         name: Gather image info
-        id: gather-versions
         run: |
           pgbouncer_version=$(jq -r '.PGBOUNCER_VERSION' .versions.json)
           release_version=$(jq -r '.IMAGE_RELEASE_VERSION' .versions.json)
           debian_version=$(jq -r '.DEBIAN_VERSION' .versions.json)
-          echo "::set-output name=pgbouncer_version::${pgbouncer_version}"
-          echo "::set-output name=release_version::${release_version}"
-          echo "::set-output name=debian_version::${debian_version}"
+          echo "PGBOUNCER_VERSION=${pgbouncer_version}" >> $GITHUB_ENV
+          echo "RELEASE_VERSION=${release_version}" >> $GITHUB_ENV
+          echo "DEBIAN_VERSION=${debian_version}" >> $GITHUB_ENV
       -
         name: Docker meta
         id: docker-meta
         uses: docker/metadata-action@v4
         with:
           # list of Docker images to use as base name for tags
-          images: "${{ steps.image-repo.outputs.images }}"
+          images: "${{ env.IMAGES }}"
           # generate Docker tags based on the following events/attributes
           tags: |
             type=match,pattern=v(.*),group=1
             type=match,pattern=v(.*)-\d+,group=1
             type=ref,event=branch
           labels: |
-            org.opencontainers.image.version=${{ steps.gather-versions.outputs.pgbouncer_version }}
-            org.opencontainers.image.revision=${{ steps.gather-versions.outputs.release_version }}
+            org.opencontainers.image.version=${{ env.PGBOUNCER_VERSION }}
+            org.opencontainers.image.revision=${{ env.RELEASE_VERSION }}
             org.opencontainers.image.licenses=PostgreSQL
       -
         name: Build and push
         uses: docker/build-push-action@v3
         with:
-          platforms: ${{ steps.docker-platforms.outputs.platforms }}
+          platforms: ${{ env.PLATFORMS }}
           context: .
           push: true
           tags: ${{ steps.docker-meta.outputs.tags }}
