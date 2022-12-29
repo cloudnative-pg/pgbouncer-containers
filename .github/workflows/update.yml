@@ -21,7 +21,7 @@ jobs:
       -
         name: Get latest PgBouncer
         run: |
-          echo PGBOUNCER_VERSION=$(curl -s https://api.github.com/repos/pgbouncer/pgbouncer/releases/latest | jq -r '.assets[].name' | grep -oP "pgbouncer-\K([[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+)(?=\.tar\.gz)") >> $GITHUB_ENV
+          echo PGBOUNCER_VERSION=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/pgbouncer/pgbouncer/releases/latest | jq -r '.assets[].name' | grep -oP "pgbouncer-\K([[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+)(?=\.tar\.gz)") >> $GITHUB_ENV
       -
         name: Get latest Debian base image
         run: |
