@@ -117,8 +117,8 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' && env.UPDATED == 'true' }}
         uses: EndBug/add-and-commit@v9
         with:
-          author_name: EnterpriseDB Automated Updates
-          author_email: noreply@enterprisedb.com
+          author_name: CloudNativePG Automated Updates
+          author_email: noreply@cnpg.com
           message: 'Automatic update'
           tag: v${{ env.TAG }}
       -
