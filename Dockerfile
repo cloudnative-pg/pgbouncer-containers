@@ -43,7 +43,7 @@ ARG TARGETARCH
 LABEL name="PgBouncer Container Images" \
       vendor="The CloudNativePG Contributors" \
       version="1.21.0" \
-      release="1" \
+      release="2" \
       summary="Container images for PgBouncer (connection pooler for PostgreSQL)." \
       description="This Docker image contains PgBouncer based on Debian ${DEBIAN_VERSION}."
 
