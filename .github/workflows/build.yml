@@ -81,10 +81,9 @@ jobs:
             org.opencontainers.image.revision=${{ env.RELEASE_VERSION }}
             org.opencontainers.image.licenses=PostgreSQL
       -
-        name: Build and push
+        name: Build and load
         uses: docker/build-push-action@v5
         with:
-          platforms: ${{ env.PLATFORMS }}
           context: .
           push: false
           load: true
