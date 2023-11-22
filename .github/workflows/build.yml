@@ -17,6 +17,7 @@ env:
 permissions:
   contents: write
   packages: write
+  security-events: write
 
 jobs:
   build-and-publish:
@@ -79,6 +80,37 @@ jobs:
             org.opencontainers.image.version=${{ env.PGBOUNCER_VERSION }}
             org.opencontainers.image.revision=${{ env.RELEASE_VERSION }}
             org.opencontainers.image.licenses=PostgreSQL
+      -
+        name: Build and load
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          load: true
+          tags: ${{ steps.docker-meta.outputs.tags }}
+          labels: ${{ steps.docker-meta.outputs.labels }}
+      -
+        name: Dockle scan
+        uses: erzz/dockle-action@v1
+        with:
+          image: "ghcr.io/${{ env.IMAGE_STAGING }}:${{ env.PGBOUNCER_VERSION }}"
+          exit-code: '1'
+          failure-threshold: WARN
+          accept-keywords: key
+      -
+        name: Run Snyk to check Docker image for vulnerabilities
+        uses: snyk/actions/docker@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: "ghcr.io/${{ env.IMAGE_STAGING }}:${{ env.PGBOUNCER_VERSION }}"
+          args: --severity-threshold=high --file=${{ matrix.file }}
+      -
+        name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: snyk.sarif
       -
         name: Build and push
         uses: docker/build-push-action@v5
