@@ -93,7 +93,7 @@ jobs:
         name: Dockle scan
         uses: erzz/dockle-action@v1
         with:
-          image: "ghcr.io/${{ env.IMAGE_STAGING }}:${{ env.PGBOUNCER_VERSION }}"
+          image: "${{ env.IMAGE_STAGING }}:${{ env.PGBOUNCER_VERSION }}"
           exit-code: '1'
           failure-threshold: WARN
           accept-keywords: key
@@ -104,7 +104,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          image: "ghcr.io/${{ env.IMAGE_STAGING }}:${{ env.PGBOUNCER_VERSION }}"
+          image: "${{ env.IMAGE_STAGING }}:${{ env.PGBOUNCER_VERSION }}"
           args: --severity-threshold=high --file=${{ matrix.file }}
       -
         name: Upload result to GitHub Code Scanning
