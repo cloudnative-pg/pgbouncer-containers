@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-ARG DEBIAN_VERSION=buster-20231120-slim
+ARG DEBIAN_VERSION=buster-20231218-slim
 ARG PGBOUNCER_VERSION=1.21.0
 
 FROM debian:${DEBIAN_VERSION} AS build
@@ -43,7 +43,7 @@ ARG TARGETARCH
 LABEL name="PgBouncer Container Images" \
       vendor="The CloudNativePG Contributors" \
       version="1.21.0" \
-      release="9" \
+      release="10" \
       summary="Container images for PgBouncer (connection pooler for PostgreSQL)." \
       description="This Docker image contains PgBouncer based on Debian ${DEBIAN_VERSION}."
 
