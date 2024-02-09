@@ -10,22 +10,58 @@ defaults:
     shell: 'bash -Eeuo pipefail -x {0}'
 
 jobs:
+  retrieve-versions:
+    runs-on: ubuntu-22.04
+    outputs:
+      pgbouncer_version: ${{ env.PGBOUNCER_VERSION }}
+      debian_version: ${{ env.DEBIAN_VERSION }}
+    steps:
+      -
+        name: Get latest PgBouncer
+        run: |
+          LATEST_TAG=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/pgbouncer/pgbouncer/releases/latest | jq -r '.tag_name')
+          if [ -z "$LATEST_TAG" ]
+          then
+            echo "PgBouncer latest tag could not be retrieved"
+            exit 0
+          fi
+
+          pattern="^pgbouncer_[0-9]_[0-9]+_[0-9]+$"
+          if [[ ! $LATEST_TAG =~ $pattern ]]; then
+            echo "This version is not a stable release. Exiting."
+            exit 0
+          fi
+
+          VERSION=${LATEST_TAG//pgbouncer_/}
+          echo "PGBOUNCER_VERSION=${VERSION//_/.}" >> $GITHUB_ENV
+      -
+        name: Get latest Debian base image
+        run: |
+          DEBIAN_VERSION=$(curl -SsL "https://registry.hub.docker.com/v2/repositories/library/debian/tags/?name=buster-20&ordering=last_updated&" | jq -r ".results[].name | match(\"buster.*-slim\") | .string" | head -n1)
+          if [ -z "$DEBIAN_VERSION" ]
+          then
+            echo "Debian slim latest tag could not be retrieved"
+            exit 0
+          fi
+          echo "DEBIAN_VERSION=$DEBIAN_VERSION" >> $GITHUB_ENV
+
   update:
     runs-on: ubuntu-22.04
+    needs:
+      - retrieve-versions
+    if: |
+      needs.retrieve-versions.result == 'success' &&
+      needs.retrieve-versions.outputs.pgbouncer_version != '' &&
+      needs.retrieve-versions.outputs.debian_version != ''
+    env:
+      PGBOUNCER_VERSION: "${{ needs.retrieve-versions.outputs.pgbouncer_version }}"
+      DEBIAN_VERSION: "${{ needs.retrieve-versions.outputs.debian_version }}"
     steps:
       -
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.REPO_GHA_PAT }}
           fetch-depth: 0
-      -
-        name: Get latest PgBouncer
-        run: |
-          echo PGBOUNCER_VERSION=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/pgbouncer/pgbouncer/releases/latest | jq -r '.assets[].name' | grep -oP "pgbouncer-\K([[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+)(?=\.tar\.gz)") >> $GITHUB_ENV
-      -
-        name: Get latest Debian base image
-        run: |
-           echo DEBIAN_VERSION=$(curl -SsL "https://registry.hub.docker.com/v2/repositories/library/debian/tags/?name=buster-20&ordering=last_updated&" | jq -r ".results[].name | match(\"buster.*-slim\") | .string" | head -n1) >> $GITHUB_ENV
       -
         name: Update Dockerfile
         run: |
