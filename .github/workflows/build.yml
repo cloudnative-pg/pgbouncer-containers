@@ -82,7 +82,7 @@ jobs:
             org.opencontainers.image.licenses=PostgreSQL
       -
         name: Build and load
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: false
@@ -113,7 +113,7 @@ jobs:
           sarif_file: snyk.sarif
       -
         name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           platforms: ${{ env.PLATFORMS }}
           context: .
