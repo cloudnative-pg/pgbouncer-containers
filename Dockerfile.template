@@ -37,6 +37,7 @@ RUN  curl -sL http://www.pgbouncer.org/downloads/files/${PGBOUNCER_VERSION}/pgbo
 
 
 FROM debian:${DEBIAN_VERSION}
+ARG DEBIAN_VERSION
 ARG PGBOUNCER_VERSION
 ARG TARGETARCH
 

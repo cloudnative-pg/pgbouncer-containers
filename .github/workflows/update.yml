@@ -37,7 +37,7 @@ jobs:
       -
         name: Get latest Debian base image
         run: |
-          DEBIAN_VERSION=$(curl -SsL "https://registry.hub.docker.com/v2/repositories/library/debian/tags/?name=bullseye-20&ordering=last_updated" | jq -r ".results[].name | match(\"bullseye.*-slim\") | .string" | head -n1)
+          DEBIAN_VERSION=$(curl -SsL "https://registry.hub.docker.com/v2/repositories/library/debian/tags/?name=bookworm-20&ordering=last_updated" | jq -r ".results[].name | match(\"bookworm.*-slim\") | .string" | head -n1)
           if [ -z "$DEBIAN_VERSION" ]
           then
             echo "Debian slim latest tag could not be retrieved"
