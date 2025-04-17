@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 ARG DEBIAN_VERSION=bookworm-20250407-slim
-ARG PGBOUNCER_VERSION=1.24.0
+ARG PGBOUNCER_VERSION=1.24.1
 
 FROM debian:${DEBIAN_VERSION} AS build
 ARG PGBOUNCER_VERSION
@@ -43,8 +43,8 @@ ARG TARGETARCH
 
 LABEL name="PgBouncer Container Images" \
       vendor="The CloudNativePG Contributors" \
-      version="1.24.0" \
-      release="15" \
+      version="1.24.1" \
+      release="1" \
       summary="Container images for PgBouncer (connection pooler for PostgreSQL)." \
       description="This Docker image contains PgBouncer based on Debian ${DEBIAN_VERSION}."
 
