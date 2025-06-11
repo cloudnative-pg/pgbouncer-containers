@@ -1,5 +1,5 @@
 {
-  "DEBIAN_VERSION": "bookworm-20250520-slim",
-  "IMAGE_RELEASE_VERSION": "4",
+  "DEBIAN_VERSION": "bookworm-20250610-slim",
+  "IMAGE_RELEASE_VERSION": "5",
   "PGBOUNCER_VERSION": "1.24.1"
 }
