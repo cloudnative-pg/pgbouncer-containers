@@ -60,7 +60,7 @@ jobs:
       DEBIAN_VERSION: "${{ needs.retrieve-versions.outputs.debian_version }}"
     steps:
       -
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           token: ${{ secrets.REPO_GHA_PAT }}
           fetch-depth: 0
