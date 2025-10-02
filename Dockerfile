@@ -23,7 +23,7 @@ ARG PGBOUNCER_VERSION
 # Install build dependencies.
 RUN set -ex; \
     apt-get update && apt-get upgrade -y; \
-    apt-get install -y --no-install-recommends curl make pkg-config libevent-dev build-essential libssl-dev libudns-dev openssl ; \
+    apt-get install -y --no-install-recommends curl make pkg-config libevent-dev build-essential libssl-dev libudns-dev libc-ares2 libc-ares-dev openssl ; \
     apt-get purge -y --auto-remove ; \
     rm -fr /tmp/* ; \
     rm -rf /var/lib/apt/lists/*
@@ -32,7 +32,7 @@ RUN set -ex; \
 RUN  curl -sL http://www.pgbouncer.org/downloads/files/${PGBOUNCER_VERSION}/pgbouncer-${PGBOUNCER_VERSION}.tar.gz > pgbouncer.tar.gz ; \
      tar xzf pgbouncer.tar.gz ; \
      cd pgbouncer-${PGBOUNCER_VERSION} ; \
-     sh ./configure --without-cares --with-udns ;  \
+     sh ./configure --with-cares;  \
      make
 
 
@@ -50,7 +50,7 @@ LABEL name="PgBouncer Container Images" \
 
 RUN  set -ex; \
      apt-get update && apt-get upgrade -y; \
-     apt-get install -y libevent-dev libssl-dev libudns-dev libvshadow-utils findutils; \
+     apt-get install -y libevent-dev libssl-dev libudns-dev libvshadow-utils findutils libc-ares2 libc-ares-dev; \
      apt-get -y install postgresql ; \
      apt-get -y clean ; \
      rm -rf /var/lib/apt/lists/*; \
