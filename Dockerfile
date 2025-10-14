@@ -6,7 +6,7 @@ ARG PGBOUNCER_VERSION
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends -o Dpkg::::="--force-confdef" -o Dpkg::::="--force-confold" \
-      "pgbouncer=${PGBOUNCER_VERSION}*" postgresql-client && \
+      "pgbouncer=${PGBOUNCER_VERSION}" postgresql-client && \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false && \
     rm -rf /var/lib/apt/lists/* /var/cache/* /var/log/* /tmp/* && \
     ln -s /usr/sbin/pgbouncer /usr/bin/pgbouncer && \

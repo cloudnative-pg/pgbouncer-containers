@@ -20,9 +20,9 @@ now = timestamp()
 authors = "The CloudNativePG Contributors"
 url = "https://github.com/cloudnative-pg/pgbouncer-containers"
 
-// PgBouncer version to build
-// DO NOT MANUALLY EDIT THE CONTENT - This is updated by Renovate
-pgBouncerVersion = "1.24.1"
+// PgBouncer version to install
+// DO NOT MANUALLY EDIT THE CONTENT - This is updated automatically
+pgBouncerVersion = "1.24.1-1"
 
 // Debian base version
 // renovate: datasource=docker versioning=loose
