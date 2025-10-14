@@ -1,3 +1,7 @@
+[![CloudNativePG](./logo/cloudnativepg.png)](https://cloudnative-pg.io/)
+
+---
+
 # PgBouncer Container Images
 
 Maintenance scripts to generate Immutable Application Containers
@@ -21,4 +25,3 @@ Copyright The CloudNativePG Contributors.
 *[Postgres, PostgreSQL and the Slonik Logo](https://www.postgresql.org/about/policies/trademarks/)
 are trademarks or registered trademarks of the PostgreSQL Community Association
 of Canada, and used with their permission.*
-

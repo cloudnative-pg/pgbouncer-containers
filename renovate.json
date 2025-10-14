@@ -1,0 +1,36 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "docker:pinDigests"
+  ],
+  "enabledManagers": [
+    "github-actions",
+    "custom.regex"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/docker-bake.hcl/"
+      ],
+      "matchStrings": [
+        "\\/\\/\\s*renovate:\\s*datasource=(?<datasource>.*?)\\s+(versioning=(?<versioning>.*?))?\\s+\"(?<depName>[^:]+):(?<currentValue>[^\\s@]+)(@(?<currentDigest>sha256:[0-9a-f]*))?\""      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/docker-bake.hcl/"
+      ],
+      "matchStrings": [
+        "pgBouncerVersion: (?<currentValue>.*?)"
+      ],
+      "datasourceTemplate": "github-tags",
+      "versioningTemplate": "loose",
+      "depNameTemplate": "pgbouncer/pgbouncer",
+      "extractVersionTemplate": "^pgbouncer_(?<version>\\d+_\\d+_\\d+)$",
+      "autoReplaceStringTemplate": "pgBouncerVersion: {{#if newVersion}}{{replace newVersion '_' '.'}}{{/if}}"
+    }
+  ]
+}
