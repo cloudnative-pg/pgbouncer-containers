@@ -32,9 +32,9 @@ target "default" {
   dockerfile = "Dockerfile"
   context = "."
   tags = [
-    "${fullname}:${pgBouncerVersion}",
-    "${fullname}:${pgBouncerVersion}-${distroVersion(base)}",
-    "${fullname}:${pgBouncerVersion}-${formatdate("YYYYMMDDhhmm", now)}-${distroVersion(base)}",
+    "${fullname}:${plainVersion(pgBouncerVersion)}",
+    "${fullname}:${plainVersion(pgBouncerVersion)}-${distroVersion(base)}",
+    "${fullname}:${plainVersion(pgBouncerVersion)}-${formatdate("YYYYMMDDhhmm", now)}-${distroVersion(base)}",
   ]
   platforms = [
     "linux/amd64",
@@ -55,8 +55,8 @@ target "default" {
     "index,manifest:org.opencontainers.image.version=${pgBouncerVersion}",
     "index,manifest:org.opencontainers.image.revision=${revision}",
     "index,manifest:org.opencontainers.image.vendor=${authors}",
-    "index,manifest:org.opencontainers.image.title=CloudNativePG PgBouncer ${pgBouncerVersion}",
-    "index,manifest:org.opencontainers.image.description=A PgBouncer ${pgBouncerVersion} container image",
+    "index,manifest:org.opencontainers.image.title=CloudNativePG PgBouncer ${plainVersion(pgBouncerVersion)}",
+    "index,manifest:org.opencontainers.image.description=A PgBouncer ${plainVersion(pgBouncerVersion)} container image",
     "index,manifest:org.opencontainers.image.documentation=${url}",
     "index,manifest:org.opencontainers.image.authors=${authors}",
     "index,manifest:org.opencontainers.image.licenses=Apache-2.0",
@@ -70,8 +70,8 @@ target "default" {
     "org.opencontainers.image.version" = "${pgBouncerVersion}",
     "org.opencontainers.image.revision" = "${revision}",
     "org.opencontainers.image.vendor" = "${authors}",
-    "org.opencontainers.image.title" = "CloudNativePG PgBouncer ${pgBouncerVersion}",
-    "org.opencontainers.image.description" = "A PgBouncer ${pgBouncerVersion} container image",
+    "org.opencontainers.image.title" = "CloudNativePG PgBouncer ${plainVersion(pgBouncerVersion)}",
+    "org.opencontainers.image.description" = "A PgBouncer ${plainVersion(pgBouncerVersion)} container image",
     "org.opencontainers.image.documentation" = "${url}",
     "org.opencontainers.image.authors" = "${authors}",
     "org.opencontainers.image.licenses" = "Apache-2.0"
@@ -93,4 +93,9 @@ function distroVersion {
 function digest {
   params = [ imageNameWithSha ]
   result = index(split("@", imageNameWithSha), 1)
+}
+
+function plainVersion {
+  params = [ version ]
+  result = index(split("-", version), 0)
 }
