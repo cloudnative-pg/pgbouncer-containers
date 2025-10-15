@@ -49,7 +49,7 @@ jobs:
           access_token: ${{ secrets.REPO_GHA_PAT }}
           branch: main
           enforce_admins: false
-          
+
       - uses: EndBug/add-and-commit@a94899bca583c204427a224a7af87c02f9b325d5 # v9
         with:
           author_name: CloudNativePG Automated Updates
