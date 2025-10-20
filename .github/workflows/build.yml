@@ -2,121 +2,115 @@ name: Continuous Delivery
 
 on:
   push:
-    tags:
-      - v*
   workflow_dispatch:
 
 defaults:
   run:
     shell: 'bash -Eeuo pipefail -x {0}'
 
-env:
-  IMAGE_STAGING: ghcr.io/cloudnative-pg/pgbouncer-testing
-  IMAGE_RELEASE: ghcr.io/cloudnative-pg/pgbouncer
-
-permissions:
-  contents: write
-  packages: write
-  security-events: write
+permissions: {}
 
 jobs:
-  build-and-publish:
-    runs-on: ubuntu-22.04
+  testbuild:
+    name: Build and publish
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+      # Required by the cosign step
+      id-token: write
+    outputs:
+      metadata: ${{ steps.build.outputs.metadata }}
+      images: ${{ steps.images.outputs.images }}
     steps:
-      -
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-      -
-        name: Detect platforms
-        run: |
-          platforms="linux/amd64,linux/arm64"
-          echo "PLATFORMS=${platforms}" >> $GITHUB_ENV
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: ${{ env.PLATFORMS }}
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      -
-        name: Log in to the GitHub Container registry
-        uses: docker/login-action@v3
+      - name: Checkout Code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+
+      - name: Log in to the GitHub Container registry
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      -
-        name: Set image repository
-        run: |
-          if [[ "${GITHUB_REF}" =~ refs/tags/v(.*) ]]; then
-            echo "IMAGES=${{ env.IMAGE_RELEASE }},${{ env.IMAGE_STAGING }}" >> $GITHUB_ENV
-          else
-            echo "IMAGES=${{ env.IMAGE_STAGING }}" >> $GITHUB_ENV
-          fi
-      -
-        name: Gather image info
-        run: |
-          pgbouncer_version=$(jq -r '.PGBOUNCER_VERSION' .versions.json)
-          release_version=$(jq -r '.IMAGE_RELEASE_VERSION' .versions.json)
-          debian_version=$(jq -r '.DEBIAN_VERSION' .versions.json)
-          echo "PGBOUNCER_VERSION=${pgbouncer_version}" >> $GITHUB_ENV
-          echo "RELEASE_VERSION=${release_version}" >> $GITHUB_ENV
-          echo "DEBIAN_VERSION=${debian_version}" >> $GITHUB_ENV
-      -
-        name: Docker meta
-        id: docker-meta
-        uses: docker/metadata-action@v5
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3
         with:
-          # list of Docker images to use as base name for tags
-          images: "${{ env.IMAGES }}"
-          # generate Docker tags based on the following events/attributes
-          tags: |
-            type=match,pattern=v(.*),group=1
-            type=match,pattern=v(.*)-\d+,group=1
-            type=ref,event=branch
-          labels: |
-            org.opencontainers.image.version=${{ env.PGBOUNCER_VERSION }}
-            org.opencontainers.image.revision=${{ env.RELEASE_VERSION }}
-            org.opencontainers.image.licenses=PostgreSQL
-      -
-        name: Build and load
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: false
-          load: true
-          tags: ${{ steps.docker-meta.outputs.tags }}
-          labels: ${{ steps.docker-meta.outputs.labels }}
-      -
-        name: Dockle scan
-        uses: erzz/dockle-action@v1
-        with:
-          image: "${{ env.IMAGE_STAGING }}:${{ env.PGBOUNCER_VERSION }}"
-          exit-code: '1'
-          failure-threshold: WARN
-          accept-keywords: key
-      -
-        name: Run Snyk to check Docker image for vulnerabilities
-        uses: snyk/actions/docker@master
-        continue-on-error: true
+          platforms: 'arm64'
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3
+
+      - name: Build and push
+        uses: docker/bake-action@3acf805d94d93a86cce4ca44798a76464a75b88c # v6
+        id: build
         env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          environment: testing
+          registry: ghcr.io/${{ github.repository_owner }}
+          revision: ${{ github.sha }}
         with:
-          image: "${{ env.IMAGE_STAGING }}:${{ env.PGBOUNCER_VERSION }}"
-          args: --severity-threshold=high --file=${{ matrix.file }}
-      -
-        name: Upload result to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v4
-        with:
-          sarif_file: snyk.sarif
-      -
-        name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          platforms: ${{ env.PLATFORMS }}
-          context: .
           push: true
-          tags: ${{ steps.docker-meta.outputs.tags }}
-          labels: ${{ steps.docker-meta.outputs.labels }}
+
+      # Get a list of the images that were built and pushed. We only care about a single tag for each image.
+      - name: Generated images
+        id: images
+        run: |
+          echo "images=$(echo '${{ steps.build.outputs.metadata }}' | jq -c '[ .[]."image.name" | sub(",.*";"") ]')" >>  "$GITHUB_OUTPUT"
+
+      # Even if we're testing we sign the images, so we can push them to production later if that's required
+      - name: Install cosign
+        uses: sigstore/cosign-installer@398d4b0eeef1380460a10c8013a76f728fb906ac # v3
+        # See https://github.blog/security/supply-chain-security/safeguard-container-signing-capability-actions/
+        # and https://github.com/actions/starter-workflows/blob/main/ci/docker-publish.yml for more details on
+        # how to use cosign.
+      - name: Sign images
+        run: |
+          echo '${{ steps.build.outputs.metadata }}' | \
+            jq '.[] | (."image.name" | sub(",.*";"" )) + "@" + ."containerimage.digest"' | \
+            xargs cosign sign --yes
+
+  security:
+    name: Security checks
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: read
+      security-events: write
+    needs:
+      - testbuild
+    strategy:
+      matrix:
+        image: ${{fromJson(needs.testbuild.outputs.images)}}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+
+      - name: Security checks
+        uses: cloudnative-pg/postgres-containers/.github/actions/security-scans@main
+        with:
+          image: "${{ matrix.image }}"
+          registry_user: ${{ github.actor }}
+          registry_token: ${{ secrets.GITHUB_TOKEN }}
+          snyk_token: ${{ secrets.SNYK_TOKEN }}
+          dockerfile: "./Dockerfile"
+
+  copytoproduction:
+    name: Copy images to production
+    if: |
+      github.ref == 'refs/heads/main' || github.event_name == 'schedule'
+    runs-on: ubuntu-24.04
+    needs:
+      - testbuild
+      - security
+    permissions:
+      contents: read
+      packages: write
+      # Required by the cosign step
+      id-token: write
+    steps:
+      - name: Copy to production
+        uses: cloudnative-pg/postgres-containers/.github/actions/copy-images@main
+        with:
+          bake_build_metadata: "${{ needs.testbuild.outputs.metadata }}"
+          registry_user: ${{ github.actor }}
+          registry_token: ${{ secrets.GITHUB_TOKEN }}
