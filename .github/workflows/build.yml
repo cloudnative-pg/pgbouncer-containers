@@ -109,7 +109,7 @@ jobs:
       id-token: write
     steps:
       - name: Copy to production
-        uses: cloudnative-pg/postgres-containers/.github/actions/copy-images@dev/340
+        uses: cloudnative-pg/postgres-containers/.github/actions/copy-images@main
         with:
           bake_build_metadata: "${{ needs.testbuild.outputs.metadata }}"
           registry_user: ${{ github.actor }}
