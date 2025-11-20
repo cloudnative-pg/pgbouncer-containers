@@ -5,6 +5,8 @@ ARG PGBOUNCER_VERSION
 
 RUN apt-get update && \
     apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends postgresql-common ca-certificates && \
+    /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y && \
     apt-get install -y --no-install-recommends -o Dpkg::::="--force-confdef" -o Dpkg::::="--force-confold" \
       "pgbouncer=${PGBOUNCER_VERSION}" postgresql-client && \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false && \
