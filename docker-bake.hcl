@@ -22,7 +22,7 @@ url = "https://github.com/cloudnative-pg/pgbouncer-containers"
 
 // PgBouncer version to install
 // renovate: suite=trixie-pgdg depName=pgbouncer
-pgBouncerVersion = "1.25.0-2.pgdg13+1"
+pgBouncerVersion = "1.25.1-1.pgdg13+1"
 
 // Debian base version
 // renovate: datasource=docker versioning=loose
