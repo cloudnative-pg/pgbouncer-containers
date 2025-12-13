@@ -23,3 +23,4 @@ USER pgbouncer
 COPY entrypoint.sh .
 
 ENTRYPOINT ["./entrypoint.sh"]
+CMD ["/usr/bin/pgbouncer", "/etc/pgbouncer/pgbouncer.ini"]
