@@ -55,8 +55,10 @@ jobs:
       # Get a list of the images that were built and pushed. We only care about a single tag for each image.
       - name: Generated images
         id: images
+        env:
+          BUILD_METADATA: ${{ steps.build.outputs.metadata }}
         run: |
-          echo "images=$(echo '${{ steps.build.outputs.metadata }}' | jq -c '[ .[]."image.name" | sub(",.*";"") ]')" >>  "$GITHUB_OUTPUT"
+          echo "images=$(echo "${BUILD_METADATA}" | jq -c '[ .[]."image.name" | sub(",.*";"") ]')" >>  "$GITHUB_OUTPUT"
 
       # Even if we're testing we sign the images, so we can push them to production later if that's required
       - name: Install cosign
@@ -65,8 +67,10 @@ jobs:
         # and https://github.com/actions/starter-workflows/blob/main/ci/docker-publish.yml for more details on
         # how to use cosign.
       - name: Sign images
+        env:
+          BUILD_METADATA: ${{ steps.build.outputs.metadata }}
         run: |
-          echo '${{ steps.build.outputs.metadata }}' | \
+          echo "${BUILD_METADATA}" | \
             jq '.[] | (."image.name" | sub(",.*";"" )) + "@" + ."containerimage.digest"' | \
             xargs cosign sign --yes
 
