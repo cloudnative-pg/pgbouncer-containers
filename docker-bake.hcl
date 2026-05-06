@@ -44,6 +44,9 @@ target "default" {
     PGBOUNCER_VERSION = "${pgBouncerVersion}"
     BASE = "${base}"
   }
+  output = [
+    "type=image,oci-mediatypes=true,oci-artifact=true",
+  ]
   attest = [
     "type=provenance,mode=max",
     "type=sbom"
