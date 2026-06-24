@@ -20,6 +20,5 @@ RUN apt-get update && \
 EXPOSE 6432
 USER pgbouncer
 
-COPY entrypoint.sh .
-
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/usr/bin/pgbouncer"]
+CMD ["/etc/pgbouncer/pgbouncer.ini"]
