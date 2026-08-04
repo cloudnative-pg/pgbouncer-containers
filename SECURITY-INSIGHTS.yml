@@ -81,11 +81,13 @@ repository:
         type: SAST
         rulesets: ["default"]
         results: {}
-        comment: GitHub's default CodeQL setup, enabled at the repo-settings level.
+        comment: >-
+          Ingests SARIF results from Snyk (uploaded during the CI "security" job)
+          plus GitHub's default CodeQL setup for GitHub Actions workflows.
         integration:
           adhoc: false
-          ci: false
-          release: false
+          ci: true
+          release: true
 
     assessments:
       self:
