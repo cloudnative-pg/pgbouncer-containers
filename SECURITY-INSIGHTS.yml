@@ -1,0 +1,94 @@
+header:
+  schema-version: 2.2.0
+  last-updated: '2026-08-04'
+  last-reviewed: '2026-08-04'
+  url: https://raw.githubusercontent.com/cloudnative-pg/pgbouncer-containers/main/SECURITY-INSIGHTS.yml
+  # reference the main SECURITY-INSIGHTS file from CNPG repo
+  project-si-source: https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/SECURITY-INSIGHTS.yml
+
+repository:
+  url: https://github.com/cloudnative-pg/pgbouncer-containers
+  status: active
+  accepts-change-request: true
+  accepts-automated-change-request: true
+  no-third-party-packages: false
+  core-team:
+    - name: Gabriele Bartolini
+      email: gabriele.bartolini@enterprisedb.com
+      primary: true
+    - name: Marco Nenciarini
+      email: marco.nenciarini@enterprisedb.com
+      primary: false
+    - name: Francesco Canovai
+      email: francesco.canovai@enterprisedb.com
+      primary: false
+    - name: Leonardo Cecchi
+      email: leonardo.cecchi@enterprisedb.com
+      primary: false
+    - name: Niccolò Fei
+      email: niccolo.fei@enterprisedb.com
+      primary: false
+    - name: Tao Li
+      email: tao.li@enterprisedb.com
+      primary: false
+  license:
+    url: https://www.apache.org/licenses/LICENSE-2.0
+    expression: Apache-2.0
+
+  release:
+    automated-pipeline: true
+    distribution-points:
+      - uri: https://github.com/cloudnative-pg/pgbouncer-containers/pkgs/container/pgbouncer
+        comment: GitHub packages for PgBouncer container images
+
+  security:
+    tools:
+      - name: Dependabot
+        type: SCA
+        rulesets: ["default"]
+        results: {}
+        integration:
+          adhoc: true
+          ci: false
+          release: false
+      - name: Renovate
+        type: SCA
+        rulesets: ["default"]
+        results: {}
+        integration:
+          adhoc: true
+          ci: true
+          release: false
+      - name: Snyk
+        type: container
+        rulesets: ["default"]
+        results: {}
+        comment: Scans container images for known vulnerabilities.
+        integration:
+          adhoc: false
+          ci: true
+          release: true
+      - name: Cosign
+        type: container
+        rulesets: ["default"]
+        results: {}
+        comment: Used to cryptographically sign container images.
+        integration:
+          adhoc: false
+          ci: true
+          release: true
+      - name: GitHub Code Scanning
+        type: SAST
+        rulesets: ["default"]
+        results: {}
+        comment: >-
+          Ingests SARIF results from Snyk (uploaded during the CI "security" job)
+          plus GitHub's default CodeQL setup for GitHub Actions workflows.
+        integration:
+          adhoc: false
+          ci: true
+          release: true
+
+    assessments:
+      self:
+        comment: Refer to the main project.
