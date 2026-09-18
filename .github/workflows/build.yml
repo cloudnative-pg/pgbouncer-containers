@@ -76,7 +76,7 @@ jobs:
 
   security:
     name: Security checks
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
       packages: read
@@ -103,7 +103,7 @@ jobs:
     name: Copy images to production
     if: |
       github.ref == 'refs/heads/main' || github.event_name == 'schedule'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs:
       - testbuild
       - security
