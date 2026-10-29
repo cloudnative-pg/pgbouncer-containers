@@ -26,7 +26,7 @@ pgBouncerVersion = "1.26.1-1.pgdg13+1"
 
 // Debian base version
 // renovate: datasource=docker versioning=loose
-base = "debian:trixie-slim@sha256:89c1ea91e897f0fe0a3731595330bc45b8bdef4047464a07116f891a94054b31"
+base = "debian:trixie-slim@sha256:f6b08b09a05725f9431502d3b5714f5c4576e82c1a84fa1debe0c24a7e0c3ec4"
 
 target "default" {
   dockerfile = "Dockerfile"
