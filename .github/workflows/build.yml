@@ -72,7 +72,7 @@ jobs:
         run: |
           echo "${BUILD_METADATA}" | \
             jq '.[] | (."image.name" | sub(",.*";"" )) + "@" + ."containerimage.digest"' | \
-            xargs cosign sign --yes
+            xargs cosign sign --recursive --yes
 
   security:
     name: Security checks
