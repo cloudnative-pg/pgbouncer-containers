@@ -5,7 +5,10 @@ ARG PGBOUNCER_VERSION
 
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends postgresql-common ca-certificates && \
+    apt-get install -y --no-install-recommends postgresql-common ca-certificates \
+      # systemd-standalone-* stop postgresql-common from pulling in the full systemd
+      # See https://bugs.debian.org/1141909
+      systemd-standalone-sysusers systemd-standalone-tmpfiles && \
     /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y && \
     apt-get install -y --no-install-recommends -o Dpkg::::="--force-confdef" -o Dpkg::::="--force-confold" \
       "pgbouncer=${PGBOUNCER_VERSION}" postgresql-client && \
